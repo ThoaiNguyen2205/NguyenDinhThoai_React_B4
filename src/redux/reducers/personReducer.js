@@ -5,13 +5,13 @@ const initialState = {
     {
       id: "SV01",
       name: "Nguyễn Văn A",
-      phone: "0909090988",
+      phone: "0345352777",
       email: "nguyenvana@gmail.com",
     },
     {
       id: "SV02",
       name: "Nguyễn Văn B",
-      phone: "0909090999",
+      phone: "0868642888",
       email: "nguyenvanb@gmail.com",
     },
   ],

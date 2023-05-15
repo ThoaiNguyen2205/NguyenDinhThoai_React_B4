@@ -59,9 +59,9 @@ class TablePerson extends Component {
       if (dataType) {
         switch (dataType) {
           case "number": {
-            let regexNumber = /^-?\d*\.?\d+$/;
+            let regexNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
             if (!regexNumber.test(value)) {
-              messError = id + " phải là số !";
+              messError = id + " không đúng định dạng ! ";
             }
             break;
           }
