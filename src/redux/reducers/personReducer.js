@@ -5,13 +5,27 @@ const initialState = {
     {
       id: "SV01",
       name: "Nguyễn Văn A",
-      phone: "0909090909",
+      phone: "0909090988",
       email: "nguyenvana@gmail.com",
     },
     {
       id: "SV02",
       name: "Nguyễn Văn B",
-      phone: "0909099999",
+      phone: "0909090999",
+      email: "nguyenvanb@gmail.com",
+    },
+  ],
+  arrPersonUpdate: [
+    {
+      id: "SV01",
+      name: "Nguyễn Văn A",
+      phone: "0909090988",
+      email: "nguyenvana@gmail.com",
+    },
+    {
+      id: "SV02",
+      name: "Nguyễn Văn B",
+      phone: "0909090999",
       email: "nguyenvanb@gmail.com",
     },
   ],
@@ -20,6 +34,12 @@ const initialState = {
     name: "",
     phone: "",
     email: "",
+  },
+  errors: {
+    id: "(*)",
+    name: "(*)",
+    phone: "(*)",
+    email: "(*)",
   },
   resForm: {
     values: {
@@ -35,13 +55,9 @@ const initialState = {
       email: "(*)",
     },
   },
-  errors: {
-    id: "(*)",
-    name: "(*)",
-    phone: "(*)",
-    email: "(*)",
-  },
+  keyword: "",
   disabled: false,
+  disUpdate: true,
 };
 
 const personReducer = createSlice({
@@ -50,10 +66,12 @@ const personReducer = createSlice({
   reducers: {
     addPerson: (state, action) => {
       state.arrPerson.push(action.payload);
+      state.arrPersonUpdate.push(action.payload);
     },
     changeInput: (state, action) => {
       state.values[action.payload.id] = action.payload.value;
     },
+
     handleError: (state, action) => {
       state.errors[action.payload.id] = action.payload.value;
     },
@@ -62,14 +80,20 @@ const personReducer = createSlice({
       let indexDel = state.arrPerson.findIndex((per) => per.id === id);
       if (indexDel !== -1) {
         state.arrPerson.splice(indexDel, 1);
+        state.arrPersonUpdate.splice(indexDel, 1);
       }
     },
     editPerson: (state, action) => {
       state.disabled = true;
+      state.disUpdate = false;
       state.values = action.payload;
+    },
+    editError: (state, action) => {
+      state.errors = action.payload;
     },
     updatePerson: (state, action) => {
       state.disabled = false;
+      state.disUpdate = true;
       const { id, value } = action.payload;
       const indexUpdate = state.arrPerson.findIndex((per) => per.id === id);
       if (indexUpdate !== -1) {
@@ -78,11 +102,26 @@ const personReducer = createSlice({
           ...value,
         };
       }
+      const indexUpdateSearch = state.arrPersonUpdate.findIndex(
+        (per) => per.id === id
+      );
+      if (indexUpdateSearch !== -1) {
+        state.arrPersonUpdate[indexUpdateSearch] = {
+          ...state.arrPersonUpdate[indexUpdateSearch],
+          ...value,
+        };
+      }
     },
-    resetForm: (state, action) => {
+    resetForm: (state) => {
       state.values = state.resForm.values;
+      state.errors = state.resForm.errors;
+    },
 
-      console.log("resvalue", state.resValue);
+    searchPerson: (state, action) => {
+      state.keyword = action.payload;
+      state.arrPerson = state.arrPersonUpdate.filter((per) =>
+        per.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
     },
   },
 });
@@ -95,6 +134,9 @@ export const {
   editPerson,
   updatePerson,
   resetForm,
+  editError,
+  changeSearch,
+  searchPerson,
 } = personReducer.actions;
 
 export default personReducer.reducer;

@@ -9,39 +9,41 @@ import {
 } from "../redux/reducers/personReducer";
 
 class TablePerson extends Component {
-  handleEmpty = () => {
-    let { errors } = this.props.personReducer;
+  handleSubmit = (e) => {
+    let { values, errors } = this.props.personReducer;
+    e.preventDefault();
+    for (let key in errors) {
+      if (errors[key] !== "") {
+        alert("Vui lòng nhập đúng dữ liệu !");
+        return;
+      }
+    }
+    const action = addPerson(values);
+    this.props.dispatch(action);
+    this.handleReset();
+  };
+  handleUpdate = () => {
+    let { values, errors } = this.props.personReducer;
     for (let key in errors) {
       if (errors[key] !== "") {
         alert("Vui lòng nhập dữ liệu !");
         return;
       }
-      let { values } = this.props.personReducer;
-      const action = updatePerson({ id: values.id, value: values });
-      this.props.dispatch(action);
-      this.handleReset();
     }
-  };
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.handleEmpty();
-    let { values } = this.props.personReducer;
-    // const action1 = updatePerson({ id: values.id, value: values });
-    // this.props.dispatch(action1);
-    const action = addPerson(values);
+    const action = updatePerson({ id: values.id, value: values });
     this.props.dispatch(action);
     this.handleReset();
   };
   handleChangeInput = (e) => {
     let { id, value } = e.target;
-
     const action = changeInput({ id, value });
     this.props.dispatch(action);
     this.handleValidation(e);
   };
   handleReset = () => {
-    const action = resetForm(this.props.personReducer.values);
+    const action = resetForm(this.props.personReducer);
     this.props.dispatch(action);
+    console.log("action reset", action);
   };
   handleValidation = (e) => {
     let { id, value } = e.target;
@@ -94,16 +96,13 @@ class TablePerson extends Component {
         }
       }
       if (id === "id") {
+        let regexNumber = /^([a-zA-Z0-9]+)$/;
+        if (!regexNumber.test(value)) {
+          messError = id + " không đúng định dạng !";
+        }
         let { arrPerson } = this.props.personReducer;
         const idPer = arrPerson.map((per) => per.id.toLowerCase());
         if (idPer.includes(value.toLowerCase())) {
-          messError = id + " đã tồn tại !";
-        }
-      }
-      if (id === "email") {
-        let { arrPerson } = this.props.personReducer;
-        const emailPer = arrPerson.map((per) => per.email);
-        if (emailPer.includes(value)) {
           messError = id + " đã tồn tại !";
         }
       }
@@ -113,14 +112,13 @@ class TablePerson extends Component {
     this.props.dispatch(action);
   };
   render() {
-    console.log(this.props);
     let { values, errors } = this.props.personReducer;
     return (
-      <div className="container-fluid">
-        <h2 className="text-white text-center bg-dark p-2">
+      <div className=" ">
+        <h2 className="text-white text-center bg-dark py-2 mx-0">
           Thông tin sinh viên
         </h2>
-        <div className="container">
+        <div className="">
           <form onSubmit={this.handleSubmit}>
             <div className="row">
               <div className="col-6">
@@ -179,13 +177,14 @@ class TablePerson extends Component {
               className="btn btn-success"
               disabled={this.props.personReducer.disabled}
             >
-              Thêm sinh viên
+              Add person
             </button>
             <button
               type="button"
-              className="btn btn-primary mx-3"
+              disabled={this.props.personReducer.disUpdate}
+              className="btn btn-success mx-3"
               onClick={() => {
-                this.handleEmpty();
+                this.handleUpdate();
               }}
             >
               Update
