@@ -19,13 +19,13 @@ const initialState = {
     {
       id: "SV01",
       name: "Nguyễn Văn A",
-      phone: "0909090988",
+      phone: "0345352777",
       email: "nguyenvana@gmail.com",
     },
     {
       id: "SV02",
       name: "Nguyễn Văn B",
-      phone: "0909090999",
+      phone: "0868642888",
       email: "nguyenvanb@gmail.com",
     },
   ],
@@ -41,21 +41,27 @@ const initialState = {
     phone: "(*)",
     email: "(*)",
   },
-  resForm: {
-    values: {
-      id: "",
-      name: "",
-      phone: "",
-      email: "",
-    },
-    errors: {
-      id: "(*)",
-      name: "(*)",
-      phone: "(*)",
-      email: "(*)",
-    },
+  // resForm: {
+  //   values: {
+  //     id: "",
+  //     name: "",
+  //     phone: "",
+  //     email: "",
+  //   },
+  //   errors: {
+  //     id: "(*)",
+  //     name: "(*)",
+  //     phone: "(*)",
+  //     email: "(*)",
+  //   },
+  // },
+  editErrors: {
+    id: "",
+    name: "",
+    phone: "",
+    email: "",
   },
-  keyword: "",
+  // keyword: "",
   disabled: false,
   disUpdate: true,
 };
@@ -113,14 +119,16 @@ const personReducer = createSlice({
       }
     },
     resetForm: (state) => {
-      state.values = state.resForm.values;
-      state.errors = state.resForm.errors;
+      // state.values = state.resForm.values;
+      // state.errors = state.resForm.errors;
+      state.values = initialState.values;
+      state.errors = initialState.errors;
     },
 
     searchPerson: (state, action) => {
-      state.keyword = action.payload;
+      const keyword = action.payload.toLowerCase();
       state.arrPerson = state.arrPersonUpdate.filter((per) =>
-        per.name.toLowerCase().includes(action.payload.toLowerCase())
+        per.name.toLowerCase().includes(keyword)
       );
     },
   },

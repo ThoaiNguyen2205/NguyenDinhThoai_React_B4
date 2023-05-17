@@ -8,7 +8,7 @@ import {
 
 class InfoPerSon extends Component {
   handleChangeErrors = () => {
-    const action = editError(this.props.personReducer.resForm.values);
+    const action = editError(this.props.personReducer.editErrors);
     this.props.dispatch(action);
     // console.log("actionError", action);
   };
@@ -26,7 +26,7 @@ class InfoPerSon extends Component {
               <th>Số điện thoại</th>
               <th>Email</th>
               <th>
-                <i className="fa fa-cog"></i>
+                <i className="fa fa-cogs"></i>
               </th>
             </tr>
           </thead>
@@ -47,7 +47,7 @@ class InfoPerSon extends Component {
                       }}
                       disabled={this.props.personReducer.disabled}
                     >
-                      Del
+                      <i className="fa fa-trash-alt me-2"></i>Del
                     </button>
                     <button
                       className="btn btn-primary mx-2"
@@ -57,7 +57,7 @@ class InfoPerSon extends Component {
                         this.handleChangeErrors();
                       }}
                     >
-                      Edit
+                      <i className="fa fa-edit me-2"></i>Edit
                     </button>
                   </td>
                 </tr>

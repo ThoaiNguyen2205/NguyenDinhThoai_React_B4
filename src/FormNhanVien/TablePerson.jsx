@@ -33,6 +33,7 @@ class TablePerson extends Component {
     const action = updatePerson({ id: values.id, value: values });
     this.props.dispatch(action);
     this.handleReset();
+    console.log("action update", action);
   };
   handleChangeInput = (e) => {
     let { id, value } = e.target;
@@ -177,7 +178,7 @@ class TablePerson extends Component {
               className="btn btn-success"
               disabled={this.props.personReducer.disabled}
             >
-              Add person
+              <i className="fa fa-plus me-2"></i>Add person
             </button>
             <button
               type="button"
@@ -187,7 +188,7 @@ class TablePerson extends Component {
                 this.handleUpdate();
               }}
             >
-              Update
+              <i className="fa fa-file-upload me-2"></i>Update
             </button>
           </form>
         </div>
