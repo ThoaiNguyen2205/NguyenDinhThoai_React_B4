@@ -3,33 +3,34 @@ import { connect } from "react-redux";
 import {
   addPerson,
   changeInput,
-  handleError,
+  changeError,
   resetForm,
   updatePerson,
 } from "../redux/reducers/personReducer";
 
 class TablePerson extends Component {
-  handleSubmit = (e) => {
-    let { values, errors } = this.props.personReducer;
-    e.preventDefault();
+  handleError = () => {
+    let { errors } = this.props.personReducer;
+
     for (let key in errors) {
       if (errors[key] !== "") {
         alert("Vui lòng nhập đúng dữ liệu !");
         return;
       }
     }
+  };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    let { values } = this.props.personReducer;
+
     const action = addPerson(values);
     this.props.dispatch(action);
+    this.handleError();
     this.handleReset();
   };
   handleUpdate = () => {
-    let { values, errors } = this.props.personReducer;
-    for (let key in errors) {
-      if (errors[key] !== "") {
-        alert("Vui lòng nhập dữ liệu !");
-        return;
-      }
-    }
+    let { values } = this.props.personReducer;
+    this.handleError();
     const action = updatePerson({ id: values.id, value: values });
     this.props.dispatch(action);
     this.handleReset();
@@ -109,7 +110,7 @@ class TablePerson extends Component {
       }
     }
     newError[id] = messError;
-    const action = handleError({ id, value: messError });
+    const action = changeError({ id, value: messError });
     this.props.dispatch(action);
   };
   render() {

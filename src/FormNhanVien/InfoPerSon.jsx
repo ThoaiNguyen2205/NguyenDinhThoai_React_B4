@@ -10,11 +10,8 @@ class InfoPerSon extends Component {
   handleChangeErrors = () => {
     const action = editError(this.props.personReducer.editErrors);
     this.props.dispatch(action);
-    // console.log("actionError", action);
   };
   render() {
-    // console.log(this.props);
-    // console.log("keyword", this.props.personReducer.keyword);
     let { arrPerson } = this.props.personReducer;
     return (
       <div className="">

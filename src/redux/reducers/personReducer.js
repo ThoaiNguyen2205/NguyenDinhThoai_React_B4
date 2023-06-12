@@ -41,27 +41,14 @@ const initialState = {
     phone: "(*)",
     email: "(*)",
   },
-  // resForm: {
-  //   values: {
-  //     id: "",
-  //     name: "",
-  //     phone: "",
-  //     email: "",
-  //   },
-  //   errors: {
-  //     id: "(*)",
-  //     name: "(*)",
-  //     phone: "(*)",
-  //     email: "(*)",
-  //   },
-  // },
+
   editErrors: {
     id: "",
     name: "",
     phone: "",
     email: "",
   },
-  // keyword: "",
+
   disabled: false,
   disUpdate: true,
 };
@@ -78,7 +65,7 @@ const personReducer = createSlice({
       state.values[action.payload.id] = action.payload.value;
     },
 
-    handleError: (state, action) => {
+    changeError: (state, action) => {
       state.errors[action.payload.id] = action.payload.value;
     },
     delPerson: (state, action) => {
@@ -137,7 +124,7 @@ const personReducer = createSlice({
 export const {
   changeInput,
   addPerson,
-  handleError,
+  changeError,
   delPerson,
   editPerson,
   updatePerson,
